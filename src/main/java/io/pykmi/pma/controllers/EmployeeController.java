@@ -9,23 +9,34 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 @Controller
-@RequestMapping("/employee")
+@RequestMapping("/employees")
 public class EmployeeController {
 
     @Autowired
     EmployeeRepository repo;
 
-    @GetMapping("/new")
-    public String displayEmployeeForm(Model model) {
-        Employee employee = new Employee();
-        model.addAttribute("employee", employee);
-        return "new-employee";
+    @GetMapping("")
+    public String redirectToList() {
+        return "redirect:/employees/list";
+    }
+
+    @GetMapping("/list")
+    public String employees(Model model) {
+        List<Employee> employeeList = this.repo.findAll();
+        model.addAttribute("employeeList", employeeList);
+
+        Employee employeeForm = new Employee();
+        model.addAttribute("employeeForm", employeeForm);
+
+        return "employees";
     }
 
     @PostMapping("/save")
-    public String createEmployee(Employee employee, Model model) {
+    public String createEmployee(Employee employee) {
         this.repo.save(employee);
-        return "redirect:/employee/new";
+        return "redirect:/employees/list";
     }
 }

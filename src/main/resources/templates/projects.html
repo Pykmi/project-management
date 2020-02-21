@@ -8,40 +8,46 @@
 
 <nav th:replace="layouts :: navbar"></nav>
 
-<div class="page">
-  <div class="content">
-    <div>
-      <form action="/projects/save" th:object="${projectForm}" method="POST">
-        <input type="text" placeholder="Name" th:field="${projectForm.name}">
-        <select th:field="${projectForm.stage}">
-          <option th:value="NOTSTARTED"> Not Started</option>
-          <option th:value="INPROGRESS"> In Progress</option>
-          <option th:value="COMPLETED"> Completed</option>
-        </select>
-        <input type="text" placeholder="Description" th:field="${projectForm.description}">
-        <button type="submit">Create Project</button>
-      </form>
-    </div>
+<div class="container">
+  <div>
+    <h1 class="border-bottom mb-4">Projects Directory</h1>
+    <form action="/projects/save" th:object="${projectForm}" method="POST">
+      <input type="text" placeholder="Name" th:field="${projectForm.name}">
 
-    <h4>Current Projects</h4>
+      <select th:field="${projectForm.stage}">
+        <option th:value="NOTSTARTED"> Not Started</option>
+        <option th:value="INPROGRESS"> In Progress</option>
+        <option th:value="COMPLETED"> Completed</option>
+      </select>
 
-    <table>
-      <thead>
-      <tr>
-        <th>First Name</th>
-        <th>Last Name</th>
-        <th>Email</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="project : ${projectList}">
-        <td th:text="${project.name}" />
-        <td th:text="${project.stage}" />
-        <td th:text="${project.description}" />
-      </tr>
-      </tbody>
-    </table>
+      <input type="text" placeholder="Description" th:field="${projectForm.description}">
+
+      <select th:field="*{employees}" multiple="multiple">
+        <option th:each="employee : ${allEmployees}"
+                th:value="${employee.employeeId}"
+                th:text="${employee.firstName}">
+        </option>
+      </select>
+      <button type="submit">Create Project</button>
+    </form>
   </div>
+
+  <table class="table table-bordered table-striped mt-4">
+    <thead class="thead-dark">
+    <tr>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Email</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="project : ${projectList}">
+      <td th:text="${project.name}" />
+      <td th:text="${project.stage}" />
+      <td th:text="${project.description}" />
+    </tr>
+    </tbody>
+  </table>
 </div>
 
 </body>
